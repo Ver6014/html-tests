@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD5 to PNG Converter</title>
+</head>
+<body style="background-color:#ff71ce;">
+    <h1>MD5 Hash to PNG Converter</h1>
+    <input type="file" id="fileInput" accept=".txt">
+    <button style="background-color:##01cdfe;" id="convertButton">Convert to PNG</button>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <a id="downloadLink" style="display:none;">Download PNG</a>
+
+    <script>
+        document.getElementById('convertButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const md5Hash = event.target.result.trim();
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200;
+                canvas.height = 100;
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'black';
+                ctx.font = '20px Arial';
+                ctx.fillText(md5Hash, 10, 50);
+
+                const pngUrl = canvas.toDataURL('image/png');
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = pngUrl;
+                downloadLink.download = 'md5hash.png';
+                downloadLink.style.display = 'block';
+                downloadLink.textContent = 'Download PNG';
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>

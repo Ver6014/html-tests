@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vermillion File Metadata Editor</title>
+</head>
+
+<body style="background-color: #05ffa1;">
+    <h1>The Vermillion File Metadata Editor</h1>
+    <input style="backgroun: #b967ff" type="file" id="fileInput" />
+    <br />
+    <br>
+    <textarea style="background : #ff71ce;" id="metadata" rows="10" cols="30" placeholder="Edit metadata here..."></textarea>
+    <br />
+    <button style="background: #01cdfe;" id="downloadBtn">Download File with new metadata</button>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const metadataTextArea = document.getElementById('metadata');
+        const downloadBtn = document.getElementById('downloadBtn');
+        let file;
+
+        fileInput.addEventListener('change', (event) => {
+            file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const metadata = e.target.result;
+                metadataTextArea.value = metadata;
+            };
+            reader.readAsText(file);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const newMetadata = metadataTextArea.value;
+            const blob = new Blob([newMetadata], { type: file.type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
+

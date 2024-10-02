@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Metadata Editor</title>
+</head>
+<body>
+    <h1>Edit File Metadata</h1>
+    <input type="file" id="fileInput" />
+    <div id="metadata" style="margin-top: 20px;"></div>
+    <button id="saveButton" style="display: none;">Save Metadata</button>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const metadataDiv = document.getElementById('metadata');
+        const saveButton = document.getElementById('saveButton');
+        let file;
+
+        fileInput.addEventListener('change', (event) => {
+            file = event.target.files[0];
+            if (file) {
+                displayMetadata(file);
+                saveButton.style.display = 'block';
+            }
+        });
+
+        function displayMetadata(file) {
+            const metadataHtml = `
+                <p><strong>Name:</strong> <input type="text" id="fileName" value="${file.name}" /></p>
+                <p><strong>Size:</strong> <input type="text" id="fileSize" value="${file.size}" /></p>
+                <p><strong>Type:</strong> <input type="text" id="fileType" value="${file.type}" /></p>
+            `;
+            metadataDiv.innerHTML = metadataHtml;
+        }
+
+        saveButton.addEventListener('click', () => {
+            const newName = document.getElementById('fileName').value;
+            const newSize = document.getElementById('fileSize').value;
+            const newType = document.getElementById('fileType').value;
+
+            alert(`Metadata Updated:\nName: ${newName}\nSize: ${newSize}\nType: ${newType}`);
+        });
+    </script>
+</body>
+</html>
